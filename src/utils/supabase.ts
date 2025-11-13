@@ -1,7 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.https://xusxocwdxemozzwmkyap.supabase.co ;
-const supabaseAnonKey = import.meta.env.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh1c3hvY3dkeGVtb3p6d21reWFwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI5NzQ4NzEsImV4cCI6MjA3ODU1MDg3MX0.WMNOFjaYFF5zB6BbVDvlz2q_ISZhFKlYzWpOeChKDKM;
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
@@ -11,7 +11,7 @@ export interface CredentialRecord {
   student_address: string;
   institution_name: string;
   institution_address: string;
-  degree: string;
+  degree: string; 
   ipfs_hash: string;
   issue_date: string;
   revoked: boolean;
@@ -293,120 +293,5 @@ export const getInstitutionStats = async (
   } catch (error) {
     console.error('Error fetching institution stats:', error);
     return { totalIssued: 0, totalRevoked: 0, recentIssued: 0 };
-  }
-};
-
-export interface StudentProfile {
-  id: string;
-  wallet_address: string;
-  full_name: string;
-  email: string;
-  institution_name: string;
-  institution_address: string;
-  enrollment_date: string;
-  created_at: string;
-  updated_at: string;
-}
-
-export const createStudentProfile = async (
-  walletAddress: string,
-  fullName: string,
-  email: string,
-  institutionName: string,
-  institutionAddress: string
-): Promise<StudentProfile | null> => {
-  try {
-    const { data, error } = await supabase
-      .from('student_profiles')
-      .insert({
-        wallet_address: walletAddress,
-        full_name: fullName,
-        email: email,
-        institution_name: institutionName,
-        institution_address: institutionAddress,
-      })
-      .select()
-      .single();
-
-    if (error) throw error;
-    return data;
-  } catch (error) {
-    console.error('Error creating student profile:', error);
-    return null;
-  }
-};
-
-export const getStudentProfile = async (
-  walletAddress: string
-): Promise<StudentProfile | null> => {
-  try {
-    const { data, error } = await supabase
-      .from('student_profiles')
-      .select('*')
-      .eq('wallet_address', walletAddress)
-      .maybeSingle();
-
-    if (error) throw error;
-    return data;
-  } catch (error) {
-    console.error('Error fetching student profile:', error);
-    return null;
-  }
-};
-
-export const updateStudentProfile = async (
-  walletAddress: string,
-  updates: Partial<Omit<StudentProfile, 'id' | 'wallet_address' | 'created_at' | 'updated_at'>>
-): Promise<boolean> => {
-  try {
-    const { error } = await supabase
-      .from('student_profiles')
-      .update(updates)
-      .eq('wallet_address', walletAddress);
-
-    if (error) throw error;
-    return true;
-  } catch (error) {
-    console.error('Error updating student profile:', error);
-    return false;
-  }
-};
-
-export const getAuthorizedInstitutions = async (): Promise<
-  Array<{ address: string; name: string }>
-> => {
-  try {
-    const { data, error } = await supabase
-      .from('institution_authorization_requests')
-      .select('wallet_address, institution_name')
-      .eq('status', 'approved');
-
-    if (error) throw error;
-
-    return (data || []).map(inst => ({
-      address: inst.wallet_address,
-      name: inst.institution_name,
-    }));
-  } catch (error) {
-    console.error('Error fetching authorized institutions:', error);
-    return [];
-  }
-};
-
-export const getInstitutionStudents = async (
-  institutionAddress: string
-): Promise<StudentProfile[]> => {
-  try {
-    const { data, error } = await supabase
-      .from('student_profiles')
-      .select('*')
-      .eq('institution_address', institutionAddress)
-      .order('enrollment_date', { ascending: false });
-
-    if (error) throw error;
-    return data || [];
-  } catch (error) {
-    console.error('Error fetching institution students:', error);
-    return [];
   }
 };
