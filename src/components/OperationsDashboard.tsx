@@ -4,7 +4,7 @@ import {
   FileCheck, AlertCircle, Clock, Shield, ChevronRight,
   Menu, X, MessageSquare, Send, Flame, Trophy, Target,
   Zap, Database, Network, ArrowLeft, Bot, FileText, Share,
-  XCircle, Calendar, HelpCircle, Sparkles
+  XCircle, Calendar, HelpCircle
 } from 'lucide-react';
 import { supabase } from '../utils/supabase';
 import { ethers } from 'ethers';
@@ -15,7 +15,6 @@ import SystemHealthMonitor from './dashboard/SystemHealthMonitor';
 import NotificationsPanel from './dashboard/NotificationsPanel';
 import AnimatedGreenRobot from './AnimatedGreenRobot';
 import AIAssistantChat from './dashboard/AIAssistantChat';
-import NaturalAIChat from './dashboard/NaturalAIChat';
 
 interface DashboardStats {
   totalCredentials: number;
@@ -300,8 +299,7 @@ export default function OperationsDashboard({ onBack }: OperationsDashboardProps
             )}
             {[
               { name: 'Dashboard', icon: Activity, view: 'dashboard' },
-              { name: 'AI Assistant', icon: Bot, view: 'ai-assistant' },
-              { name: 'Natural AI', icon: Sparkles, view: 'natural-ai' }
+              { name: 'AI Assistant', icon: Bot, view: 'ai-assistant' }
             ].map((item) => (
               <button
                 key={item.name}
@@ -328,10 +326,10 @@ export default function OperationsDashboard({ onBack }: OperationsDashboardProps
               </button>
               <div className="flex-1 lg:flex-none">
                 <h1 className="text-2xl font-bold text-white animate-fade-in">
-                  {activeView === 'dashboard' ? 'Operations Center' : activeView === 'ai-assistant' ? 'AI Assistant' : activeView === 'natural-ai' ? 'Natural AI' : activeView.charAt(0).toUpperCase() + activeView.slice(1)}
+                  {activeView === 'dashboard' ? 'Operations Center' : activeView === 'ai-assistant' ? 'AI Assistant' : activeView.charAt(0).toUpperCase() + activeView.slice(1)}
                 </h1>
                 <p className="text-sm text-gray-400 mt-1">
-                  {activeView === 'dashboard' ? 'Real-time blockchain credential analytics' : activeView === 'ai-assistant' ? 'Ask questions about the platform' : activeView === 'natural-ai' ? 'Powered by Google Gemini - Ask anything' : ''}
+                  {activeView === 'dashboard' ? 'Real-time blockchain credential analytics' : activeView === 'ai-assistant' ? 'Ask questions about the platform' : ''}
                 </p>
               </div>
               <div className="flex items-center space-x-4">
@@ -347,10 +345,6 @@ export default function OperationsDashboard({ onBack }: OperationsDashboardProps
             {activeView === 'ai-assistant' ? (
               <div className="h-[calc(100vh-12rem)]">
                 <AIAssistantChat />
-              </div>
-            ) : activeView === 'natural-ai' ? (
-              <div className="h-[calc(100vh-12rem)]">
-                <NaturalAIChat />
               </div>
             ) : activeView === 'dashboard' ? (
               <>
