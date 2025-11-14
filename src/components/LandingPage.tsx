@@ -548,7 +548,7 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
             >
               <div className="text-3xl font-bold text-green-600 mb-2">
                 <AnimatedCounter target={99} />
-                <span>.9%</span>
+                <span>%</span>
               </div>
               <p className="text-gray-600">Uptime Guarantee</p>
             </motion.div>
