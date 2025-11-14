@@ -559,10 +559,10 @@ export default function LandingPage({ onGetStarted }: LandingPageProps) {
               transition={{ duration: 0.5, delay: 0.2 }}
             >
               <div className="text-3xl font-bold text-purple-600 mb-2">
-                <AnimatedCounter target={50000} />
+                <AnimatedCounter target={0} />
                 <span>+</span>
               </div>
-              <p className="text-gray-600">Credentials Secured</p>
+              <p className="text-gray-600">Data Breaches</p>
             </motion.div>
           </div>
         </div>
